@@ -1,0 +1,15 @@
+# .gitignore
+/build/
+/dist/
+/cache/
+/image/
+/private/
+/__pycache__/
+/tmp/
+hpdbdl.ini
+*~
+*.bak
+.\#*
+\#*
+TAGS
+makefile
