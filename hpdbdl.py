@@ -10,18 +10,22 @@ import configparser
 import datetime
 import getpass
 import os
+import sys
+
+import misc
 import scrape
 import selectcp
-import sys
 
 version = '0.00'
 # 設定ファイル
 # パスワードが生で書かれるので、自分しか見れないアクセス権設定にしておくことをお勧めします
 config_filename = 'hpdbdl.ini'
+# 日本標準時での現在の年-月文字列
+YMStringNowJST = misc.GetYMStringNowJST()
 # 今月のキャッシュディレクトリ
-cache_dir = 'cache/' + datetime.date.today().strftime("%Y-%m")
+cache_dir = 'cache/' + YMStringNowJST
 # 今月の画像ディレクトリ
-image_dir = 'image/' + datetime.date.today().strftime("%Y-%m")
+image_dir = 'image/' + YMStringNowJST
 
 # 設定ファイル読み込み
 config = configparser.ConfigParser()
@@ -68,10 +72,17 @@ if config_dirty:
 
 # ダウンロード
 print('ダウンロード開始')
-scrape.scrape('http://www.helloproject-digitalbooks.com/',
-              'http://www.helloproject-digitalbooks.com/members/',
-              username, password, cache_dir, 4, 2)
-print('ダウンロード完了しました。')
+try:
+    scrape.scrape('http://www.helloproject-digitalbooks.com/',
+                  'http://www.helloproject-digitalbooks.com/members/',
+                  username, password, cache_dir, 4, 2,
+                  YMStringNowJST)
+    print('ダウンロード完了しました。')
+except scrape.EMonthChanged as e:
+    print('Error: {}'.format(e))
+except Exception as e:
+    print('Error: {}'.format(e))
+    
 
 # 仕分け
 print('仕分け開始')
