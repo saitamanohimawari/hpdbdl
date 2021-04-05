@@ -15,15 +15,26 @@ import time
 import urllib.parse
 import urllib.request
 
+import misc
+
 debug = 0
 
+class EMonthChanged(Exception):
+    def __init__(self):
+        pass
+
+    def __str__(self):
+        return "ダウンロード中に月が変わりました。"
+    
 def scrape(baseurl, # BASIC認証するベースの URL
            starturl, # スクレイピングを開始する URL
            username, # BASIC認証ユーザ名
            password, # BASIC認証パスワード
            outdir, # 出力ディレクトリ
            limit_level, # 開始 URL からの参照回数の上限
-           force_download_level): # 開始 URL からの参照回数がこの値未満の場合ローカルファイルがあっても取得する
+           force_download_level, # 開始 URL からの参照回数がこの値未満の場合ローカルファイルがあっても取得する
+           YMStringNowJST # スタート時点の日本標準時での年-月文字列
+           ):
 
     # パスワードマネージャ生成
     password_mgr = urllib.request.HTTPPasswordMgrWithDefaultRealm()
@@ -83,6 +94,8 @@ def scrape(baseurl, # BASIC認証するベースの URL
                     req = urllib.request.Request(url, headers = headers)
                     with urllib.request.urlopen(req) as response:
                         the_page = response.read()
+                    if YMStringNowJST != misc.GetYMStringNowJST():
+                        raise EMonthChanged
                     with open(localpath, mode='wb') as fp:
                         fp.write(the_page)
                 downloaded_urls.add(url)
@@ -135,6 +148,8 @@ def scrape(baseurl, # BASIC認証するベースの URL
                     if debug >= 100:
                         print('new_url={}'.format(new_url))
                     next_urls.add(new_url)
+            except EMonthChanged as e:
+                raise e
             except Exception as e:
                 if not re.search(r'spacer\.gif$', url): # こいつだけはいつもエラーになるので
                     print('Error: {} at {}'.format(e, url))
