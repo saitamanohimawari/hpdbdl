@@ -51,6 +51,7 @@ python のインストールは必要ありません。
         + beautifulsoup4 4.9.3
         + soupsieve 2.2.1
         + Pillow 8.1.2
+        + tzdata 2021.1
 
 動作確認済み環境
 
