@@ -47,6 +47,9 @@ def scrape(baseurl, # BASIC認証するベースの URL
 
     # ローカルディレクトリの準備
     os.makedirs(outdir, exist_ok=True)
+
+    # ダウンロード済み URL
+    downloaded_urls = set()
     
     urls = set([starturl])
     for level in range(0,limit_level):
@@ -55,6 +58,8 @@ def scrape(baseurl, # BASIC認証するベースの URL
         next_urls = set()
         for url in sorted(urls):
             try:
+                if url in downloaded_urls:
+                    continue
                 if debug >= 100:
                     print('url={}'.format(url))
                 # url をパース
@@ -80,6 +85,7 @@ def scrape(baseurl, # BASIC認証するベースの URL
                         the_page = response.read()
                     with open(localpath, mode='wb') as fp:
                         fp.write(the_page)
+                downloaded_urls.add(url)
                 # 解析
                 doc = []
                 clines = 0
