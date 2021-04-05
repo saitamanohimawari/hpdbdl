@@ -53,7 +53,7 @@ def scrape(baseurl, # BASIC認証するベースの URL
         if debug >= 100:
             print('level {}'.format(level))
         next_urls = set()
-        for url in urls:
+        for url in sorted(urls):
             try:
                 if debug >= 100:
                     print('url={}'.format(url))
