@@ -15,13 +15,12 @@ from bs4 import BeautifulSoup
 # std
 import configparser
 import http.cookiejar
+import logging
 import os
 import re
 import time
 import urllib.parse
 import urllib.request
-
-debug = 0
 
 class EMonthChanged(Exception):
     def __init__(self):
@@ -68,29 +67,24 @@ def scrape(baseurl, # BASIC認証するベースの URL
     
     urls = set([starturl])
     for level in range(0,limit_level):
-        if debug >= 100:
-            print('level {}'.format(level))
+        logging.info('level {}'.format(level))
         next_urls = set()
         for url in sorted(urls):
             try:
                 if url in downloaded_urls:
                     continue
-                if debug >= 100:
-                    print('url={}'.format(url))
+                logging.info('url={}'.format(url))
                 # url をパース
                 parse_result = urllib.parse.urlparse(url)
-                if debug >= 100:
-                    print('path={},params={},query={}'.format(parse_result.path, parse_result.params, parse_result.query))
+                logging.info('path={},params={},query={}'.format(parse_result.path, parse_result.params, parse_result.query))
                 # ローカルファイル名を決める
                 localfile = parse_result.path.replace('/', '_')
                 if parse_result.query:
                     localfile += '_' + parse_result.query
-                if debug >= 100:
-                    print('localfile={}'.format(localfile))
+                logging.info('localfile={}'.format(localfile))
                 # ローカルパス名
                 localpath = '/'.join([outdir, localfile])
-                if debug >= 100:
-                    print('localpath={}'.format(localpath))
+                logging.info('localpath={}'.format(localpath))
                 # 取得
                 if not os.path.isfile(localpath) or level < force_download_level:
                     print('ダウンロード中: {}'.format(url))
@@ -112,56 +106,46 @@ def scrape(baseurl, # BASIC認証するベースの URL
                             line = fp.readline()
                         except Exception as e:
                             # 解析エラーは握りつぶしていい
-                            if debug:
-                                print('Error: {} : {}'.format(localpath, e))
+                            logging.info('Error: {} : {}'.format(localpath, e))
                         doc.append(line)
                         clines += 1
-                        if debug >= 110:
-                            print('{}:{}'.format(clines, line))
+                        logging.info('{}:{}'.format(clines, line))
                         if not line:
                             break
-                if debug >= 100:
-                    print('clines={}'.format(clines))
+                logging.info('clines={}'.format(clines))
                 soup = BeautifulSoup(''.join(doc), features='html.parser')
                 a_tags = soup.findAll('a')
-                if debug >= 100:
-                    print('a_tags={}'.format(len(a_tags)))
+                logging.info('a_tags={}'.format(len(a_tags)))
                 for i in a_tags:
                     href = i.get('href')
                     if not href:
                         continue
-                    if debug >= 100:
-                        print('href={}'.format(href))
+                    logging.info('href={}'.format(href))
                     parse_result = urllib.parse.urlparse(href)
                     if parse_result.scheme or parse_result.netloc:
-                        if debug >= 100:
-                            print('other site');
+                        logging.info('other site');
                         continue
                     new_url = urllib.parse.urljoin(url, href)
-                    if debug >= 100:
-                        print('new_url={}'.format(new_url))
+                    logging.info('new_url={}'.format(new_url))
                     next_urls.add(new_url)
                 img_tags = soup.findAll('img')
-                if debug >= 100:
-                    print('img_tags={}'.format(len(img_tags)))
+                logging.info('img_tags={}'.format(len(img_tags)))
                 for i in img_tags:
                     src = i.get('src')
-                    if debug >= 100:
-                        print('src={}'.format(src))
+                    logging.info('src={}'.format(src))
                     new_url = urllib.parse.urljoin(url, src)
-                    if debug >= 100:
-                        print('new_url={}'.format(new_url))
+                    logging.info('new_url={}'.format(new_url))
                     next_urls.add(new_url)
             except EMonthChanged as e:
                 raise e
             except Exception as e:
                 if not re.search(r'spacer\.gif$', url): # こいつだけはいつもエラーになるので
-                    print('Error: {} at {}'.format(e, url))
+                    logging.exception('Error: {} at {}'.format(e, url))
         urls = next_urls
         
 # module test
 if __name__ == '__main__':
-    debug = 100
+    logging.getLogger().setLevel(logging.DEBUG)
     # 認証情報を個別ファイルに書いておくこと
     #
     # 例: 
@@ -176,11 +160,9 @@ if __name__ == '__main__':
     with open(config_filename, encoding='utf-8') as fp:
         config.read_file(fp)
     username = config['DEFAULT']['UserName']
-    if debug >= 100:
-        print('username={}'.format(username))
+    logging.info('username={}'.format(username))
     password = config['DEFAULT']['Password']
-    if debug >= 100:
-        print('password={}'.format(password))
+    logging.info('password={}'.format(password))
     scrape('http://www.helloproject-digitalbooks.com/',
            'http://www.helloproject-digitalbooks.com/members/',
            username, password, 'tmp/scraping_test', 4, 2)

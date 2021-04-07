@@ -15,10 +15,11 @@ import selectcp
 import configparser
 import datetime
 import getpass
+import logging
 import os
 import sys
 
-version = '0.00'
+version = '0.01'
 # 設定ファイル
 # パスワードが生で書かれるので、自分しか見れないアクセス権設定にしておくことをお勧めします
 config_filename = 'hpdbdl.ini'
