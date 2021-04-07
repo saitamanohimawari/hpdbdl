@@ -11,22 +11,31 @@ import misc
 import scrape
 import selectcp
 
+# PyPI
+from dateutil.relativedelta import relativedelta
+
 # std
 import configparser
 import datetime
 import getpass
 import logging
 import os
+import re
+import shutil
 import sys
 
-version = '0.01'
+version = '0.02'
 # 設定ファイル
 # パスワードが生で書かれるので、自分しか見れないアクセス権設定にしておくことをお勧めします
 config_filename = 'hpdbdl.ini'
+# 日本標準時での2か月前の年-月文字列
+YMString2MAgo = misc.GetYMStringNowJST(relativedelta(months=-2))
 # 日本標準時での現在の年-月文字列
 YMStringNowJST = misc.GetYMStringNowJST()
+# キャッシュディレクトリのベース
+cache_base_dir = 'cache'
 # 今月のキャッシュディレクトリ
-cache_dir = os.path.join('cache', YMStringNowJST)
+cache_dir = os.path.join(cache_base_dir, YMStringNowJST)
 # 今月の画像ディレクトリ
 image_dir = os.path.join('image', YMStringNowJST)
 
@@ -91,3 +100,12 @@ except Exception as e:
 print('仕分け開始')
 selectcp.select_copy(image_dir, cache_dir)
 print('仕分け完了しました。')
+
+# 2か月前までのキャッシュ自動クリア
+if os.path.isdir(cache_dir):
+    for dir in os.listdir(cache_base_dir):
+        path = os.path.join(cache_base_dir, dir)
+        if os.path.isdir(path) and re.match(r'(\d{4})-(\d{2})', dir) and dir <= YMString2MAgo:
+            print('古いキャッシュディレクトリ {} を削除します。'.format(path))
+            shutil.rmtree(path)
+            print('古いキャッシュディレクトリ {} を削除しました。'.format(path))
