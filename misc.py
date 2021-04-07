@@ -5,13 +5,15 @@
 # Copyright (C) 2021 saitamanohimawari (埼玉の向日葵)
 # https://github.com/saitamanohimawari/hpdbdl/
 #
-# 環境によっては(Windows を含む)パッケージ tzdata が必要
-#
 
 import zoneinfo
 import datetime
 
-JST = zoneinfo.ZoneInfo('Asia/Tokyo')
+JST = datetime.timezone(datetime.timedelta(hours=9), 'JST') # ZoneInfo がエラーの時はこの定義を使用
+try:
+    JST = zoneinfo.ZoneInfo('Asia/Tokyo')
+except:
+    pass # エラーは無視
 
 def GetYMStringNowJST():
     "日本標準時での現在の年-月文字列"
