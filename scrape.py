@@ -138,9 +138,15 @@ def scrape(baseurl, # BASIC認証するベースの URL
                     next_urls.add(new_url)
             except EMonthChanged as e:
                 raise e
+            except urllib.error.HTTPError as e:
+                if e.code == 401:
+                    raise e
+                if e.code == 404 and re.search(r'spacer\.gif$', url): # こいつだけはいつもエラーになるので
+                    logging.warning('urllib.error.HTTPError: {} at {} : spacer.gif のエラーは無視します'.format(e, url))
+                else:
+                    logging.exception('urllib.error.HTTPError: {} at {}'.format(e, url))
             except Exception as e:
-                if not re.search(r'spacer\.gif$', url): # こいつだけはいつもエラーになるので
-                    logging.exception('Error: {} at {}'.format(e, url))
+                raise e
         urls = next_urls
         
 # module test
