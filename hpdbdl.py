@@ -23,9 +23,9 @@ config_filename = 'hpdbdl.ini'
 # 日本標準時での現在の年-月文字列
 YMStringNowJST = misc.GetYMStringNowJST()
 # 今月のキャッシュディレクトリ
-cache_dir = 'cache/' + YMStringNowJST
+cache_dir = os.path.join('cache', YMStringNowJST)
 # 今月の画像ディレクトリ
-image_dir = 'image/' + YMStringNowJST
+image_dir = os.path.join('image', YMStringNowJST)
 
 # 設定ファイル読み込み
 config = configparser.ConfigParser()
