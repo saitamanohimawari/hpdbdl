@@ -6,7 +6,13 @@
 # https://github.com/saitamanohimawari/hpdbdl/
 #
 
+# my
+import misc
+
+# PyPI
 from bs4 import BeautifulSoup
+
+# std
 import configparser
 import http.cookiejar
 import os
@@ -14,8 +20,6 @@ import re
 import time
 import urllib.parse
 import urllib.request
-
-import misc
 
 debug = 0
 

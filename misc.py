@@ -6,8 +6,9 @@
 # https://github.com/saitamanohimawari/hpdbdl/
 #
 
-import zoneinfo
+# std
 import datetime
+import zoneinfo
 
 JST = datetime.timezone(datetime.timedelta(hours=9), 'JST') # ZoneInfo がエラーの時はこの定義を使用
 try:

@@ -6,15 +6,17 @@
 # https://github.com/saitamanohimawari/hpdbdl/
 #
 
+# my
+import misc
+import scrape
+import selectcp
+
+# std
 import configparser
 import datetime
 import getpass
 import os
 import sys
-
-import misc
-import scrape
-import selectcp
 
 version = '0.00'
 # 設定ファイル

@@ -6,7 +6,10 @@
 # https://github.com/saitamanohimawari/hpdbdl/
 #
 
+# PyPI
 from PIL import Image
+
+# std
 import os
 import re
 import shutil
