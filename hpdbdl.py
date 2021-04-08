@@ -129,9 +129,9 @@ try:
         print('ダウンロード完了しました。')
     except urllib.error.HTTPError as e:
         if e.code == 401:
-            logging.error('アカウントのエラーです。')
+            logging.error('ユーザ認証エラーです。')
+            account_error = True
         print('Error: {}'.format(e))
-        account_error = True
         error = True
     except scrape.EMonthChanged as e:
         print('Error: {}'.format(e))
