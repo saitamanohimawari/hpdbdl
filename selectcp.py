@@ -6,12 +6,14 @@
 # https://github.com/saitamanohimawari/hpdbdl/
 #
 
+# PyPI
 from PIL import Image
+
+# std
+import logging
 import os
 import re
 import shutil
-
-debug = 0
 
 def select_copy(target_dir, source_dir):
     os.makedirs(target_dir, exist_ok=True)
@@ -31,20 +33,16 @@ def select_copy(target_dir, source_dir):
             if re.match(r'9+', g1) or re.match(r'9+', g2):
                 continue
             img = Image.open(path) # 画像としてオープンできるか試す
-            if debug >= 1000:
-                print(img)
-            if debug >= 10000:
-                img.show() # OSのデフォルトの画像ビューアで表示
+            logging.debug(img)
             target_file = os.path.join(target_dir, '{}-{}.jpg'.format(g1, g2))
             print('画像ファイルコピー: {}'.format(target_file))
             shutil.copy2(path, target_file)
         except Exception as e:
-            if debug:
-                print('Error: {}'.format(e))
+            logging.info('Error: {}'.format(e))
 
 # module test
 if __name__ == '__main__':
-    debug = 100
+    logging.getLogger().setLevel(logging.DEBUG)
     target_dir = 'tmp/img'
     source_dir = 'tmp/scraping_test'
     select_copy(target_dir, source_dir)
