@@ -131,13 +131,14 @@ try:
         if e.code == 401:
             logging.error('ユーザ認証エラーです。')
             account_error = True
-        print('Error: {}'.format(e))
+        else:
+            logging.exception('Error: {}'.format(e))
         error = True
     except scrape.EMonthChanged as e:
-        print('Error: {}'.format(e))
+        logging.error('Error: {}'.format(e))
         error = True
     except Exception as e:
-        print('Error: {}'.format(e))
+        logging.exception('Error: {}'.format(e))
         error = True
 
     # アカウントの確認がされてなく、アカウントのエラーが無ければ、アカウント確認済みの印をつける
@@ -163,7 +164,7 @@ try:
                 print('古いキャッシュディレクトリ {} を削除しました。'.format(path))
 
 except Exception as e:                
-    print('Error: {}'.format(e))
+    logging.exception('Error: {}'.format(e))
     error = True
     
 if args.pause_at_end or (error and args.pause_on_error):
