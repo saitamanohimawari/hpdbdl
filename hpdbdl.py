@@ -65,9 +65,9 @@ try:
     # コマンドラインオプション処理
     args = parser.parse_args()
     if args.debug:
-        if args.debug >= 1:
+        if int(args.debug) >= 1:
             logging.getLogger().setLevel(logging.INFO)
-        if args.debug >= 10:
+        if int(args.debug) >= 10:
             logging.getLogger().setLevel(logging.DEBUG)
     
     # 設定ファイル読み込み
