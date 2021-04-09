@@ -75,16 +75,20 @@ try:
     username = ''
     password = ''
     verified = ''
+    user_agent = ''
     config_dirty = True
     try:
         with open(config_filename, encoding='utf-8') as fp:
             config.read_file(fp)
             username = config['DEFAULT']['username']
             password = config['DEFAULT']['password']
-            verified = config['DEFAULT']['verified']
+            if 'verified' in config['DEFAULT']:
+                verified = config['DEFAULT']['verified']
+            if 'user_agent' in config['DEFAULT']:
+                user_agent = config['DEFAULT']['user_agent']
             config_dirty = False
-    except:
-        pass # エラーは無視
+    except Exception as e:
+        logging.info('Error: {}'.format(e))
     
     # スタート
     print(description)
@@ -122,6 +126,9 @@ try:
     account_error = False
     print('ダウンロード開始')
     try:
+        if user_agent:
+            logging.info('user_agent={}'.format(user_agent))
+            scrape.set_user_agent(user_agent)
         scrape.scrape('http://www.helloproject-digitalbooks.com/',
                       'http://www.helloproject-digitalbooks.com/members/',
                       username, password, cache_dir, 4, 2,

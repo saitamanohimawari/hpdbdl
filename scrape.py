@@ -28,6 +28,12 @@ class EMonthChanged(Exception):
 
     def __str__(self):
         return "ダウンロード中に月が変わりました。"
+
+user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36'
+
+def set_user_agent(ua):
+    global user_agent
+    user_agent = ua
     
 def scrape(baseurl, # BASIC認証するベースの URL
            starturl, # スクレイピングを開始する URL
@@ -56,7 +62,7 @@ def scrape(baseurl, # BASIC認証するベースの URL
     urllib.request.install_opener(opener)
 
     # User-Agent を含むヘッダを作る
-    user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36'
+    logging.info('user_agent={}'.format(user_agent))
     headers = {'User-Agent': user_agent}
 
     # ローカルディレクトリの準備
