@@ -35,8 +35,7 @@ def set_user_agent(ua):
     global user_agent
     user_agent = ua
     
-def scrape(baseurl, # BASIC認証するベースの URL
-           starturl, # スクレイピングを開始する URL
+def scrape(starturl, # スクレイピングを開始する URL
            username, # BASIC認証ユーザ名
            password, # BASIC認証パスワード
            outdir, # 出力ディレクトリ
@@ -45,6 +44,7 @@ def scrape(baseurl, # BASIC認証するベースの URL
            YMStringNowJST # スタート時点の日本標準時での年-月文字列
            ):
 
+    baseurl = starturl
     # パスワードマネージャ生成
     password_mgr = urllib.request.HTTPPasswordMgrWithDefaultRealm()
     # username と password を追加
@@ -175,6 +175,5 @@ if __name__ == '__main__':
     logging.info('username={}'.format(username))
     password = config['DEFAULT']['Password']
     logging.info('password={}'.format(password))
-    scrape('http://www.helloproject-digitalbooks.com/',
-           'http://www.helloproject-digitalbooks.com/members/',
-           username, password, 'tmp/scraping_test', 4, 2)
+    scrape('http://www.helloproject-digitalbooks.com/members/',
+           username, password, 'tmp/scraping_test', 4, 2, misc.GetYMStringNowJST)

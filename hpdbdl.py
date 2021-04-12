@@ -129,8 +129,7 @@ try:
         if user_agent:
             logging.info('user_agent={}'.format(user_agent))
             scrape.set_user_agent(user_agent)
-        scrape.scrape('http://www.helloproject-digitalbooks.com/',
-                      'http://www.helloproject-digitalbooks.com/members/',
+        scrape.scrape('http://www.helloproject-digitalbooks.com/members/',
                       username, password, cache_dir, 4, 2,
                       YMStringNowJST)
         print('ダウンロード完了しました。')
