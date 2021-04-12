@@ -16,8 +16,8 @@ import zoneinfo
 JST = datetime.timezone(datetime.timedelta(hours=9), 'JST') # ZoneInfo がエラーの時はこの定義を使用
 try:
     JST = zoneinfo.ZoneInfo('Asia/Tokyo')
-except:
-    pass # エラーは無視
+except Exception as e:
+    logging.info(e)
 
 def GetYMStringNowJST(delta = relativedelta(months=0)):
     "日本標準時での現在の年-月文字列"

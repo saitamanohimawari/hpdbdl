@@ -12,6 +12,5 @@ hpdbdl.ini
 .\#*
 \#*
 TAGS
-makefile
 *.spec
-VersionInfoFile.txt
+

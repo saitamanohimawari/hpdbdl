@@ -38,7 +38,7 @@ def select_copy(target_dir, source_dir):
             print('画像ファイルコピー: {}'.format(target_file))
             shutil.copy2(path, target_file)
         except Exception as e:
-            logging.info('Error: {}'.format(e))
+            logging.info(e)
 
 # module test
 if __name__ == '__main__':

@@ -65,9 +65,9 @@ try:
     # コマンドラインオプション処理
     args = parser.parse_args()
     if args.debug:
-        if args.debug >= 1:
+        if int(args.debug) >= 1:
             logging.getLogger().setLevel(logging.INFO)
-        if args.debug >= 10:
+        if int(args.debug) >= 10:
             logging.getLogger().setLevel(logging.DEBUG)
     
     # 設定ファイル読み込み
@@ -75,16 +75,20 @@ try:
     username = ''
     password = ''
     verified = ''
+    user_agent = ''
     config_dirty = True
     try:
         with open(config_filename, encoding='utf-8') as fp:
             config.read_file(fp)
             username = config['DEFAULT']['username']
             password = config['DEFAULT']['password']
-            verified = config['DEFAULT']['verified']
+            if 'verified' in config['DEFAULT']:
+                verified = config['DEFAULT']['verified']
+            if 'user_agent' in config['DEFAULT']:
+                user_agent = config['DEFAULT']['user_agent']
             config_dirty = False
-    except:
-        pass # エラーは無視
+    except Exception as e:
+        logging.info(e)
     
     # スタート
     print(description)
@@ -122,8 +126,10 @@ try:
     account_error = False
     print('ダウンロード開始')
     try:
-        scrape.scrape('http://www.helloproject-digitalbooks.com/',
-                      'http://www.helloproject-digitalbooks.com/members/',
+        if user_agent:
+            logging.info('user_agent={}'.format(user_agent))
+            scrape.set_user_agent(user_agent)
+        scrape.scrape('http://www.helloproject-digitalbooks.com/members/',
                       username, password, cache_dir, 4, 2,
                       YMStringNowJST)
         print('ダウンロード完了しました。')
@@ -131,13 +137,14 @@ try:
         if e.code == 401:
             logging.error('ユーザ認証エラーです。')
             account_error = True
-        print('Error: {}'.format(e))
+        else:
+            logging.exception('Error: {}'.format(e))
         error = True
     except scrape.EMonthChanged as e:
-        print('Error: {}'.format(e))
+        logging.error('Error: {}'.format(e))
         error = True
     except Exception as e:
-        print('Error: {}'.format(e))
+        logging.exception('Error: {}'.format(e))
         error = True
 
     # アカウントの確認がされてなく、アカウントのエラーが無ければ、アカウント確認済みの印をつける
@@ -163,7 +170,7 @@ try:
                 print('古いキャッシュディレクトリ {} を削除しました。'.format(path))
 
 except Exception as e:                
-    print('Error: {}'.format(e))
+    logging.exception('Error: {}'.format(e))
     error = True
     
 if args.pause_at_end or (error and args.pause_on_error):
