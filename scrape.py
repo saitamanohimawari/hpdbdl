@@ -112,7 +112,7 @@ def scrape(baseurl, # BASIC認証するベースの URL
                             line = fp.readline()
                         except Exception as e:
                             # 解析エラーは握りつぶしていい
-                            logging.debug('Error: {} : {}'.format(localpath, e))
+                            logging.debug('{} : {}'.format(localpath, e))
                         doc.append(line)
                         clines += 1
                         logging.debug('{}:{}'.format(clines, line))

@@ -88,7 +88,7 @@ try:
                 user_agent = config['DEFAULT']['user_agent']
             config_dirty = False
     except Exception as e:
-        logging.info('Error: {}'.format(e))
+        logging.info(e)
     
     # スタート
     print(description)
