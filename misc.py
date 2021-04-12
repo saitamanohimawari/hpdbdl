@@ -11,6 +11,7 @@ from dateutil.relativedelta import relativedelta
 
 # std
 import datetime
+import logging
 import zoneinfo
 
 JST = datetime.timezone(datetime.timedelta(hours=9), 'JST') # ZoneInfo がエラーの時はこの定義を使用
