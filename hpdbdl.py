@@ -27,7 +27,7 @@ import sys
 import urllib.error
 
 try:
-    version = '0.02'
+    version = '1.00'
     description = 'hpdbdl - Hello! Project Digital Books DownLoader Version {}'.format(version)
     copyright = 'Copyright (C) 2021 saitamanohimawari (埼玉の向日葵)'
     url = 'https://github.com/saitamanohimawari/hpdbdl/'
@@ -76,6 +76,7 @@ try:
     password = ''
     verified = ''
     user_agent = ''
+    start_url = 'http://www.helloproject-digitalbooks.com/members/'
     config_dirty = True
     try:
         with open(config_filename, encoding='utf-8') as fp:
@@ -86,6 +87,8 @@ try:
                 verified = config['DEFAULT']['verified']
             if 'user_agent' in config['DEFAULT']:
                 user_agent = config['DEFAULT']['user_agent']
+            if 'start_url' in config['DEFAULT']:
+                start_url = config['DEFAULT']['start_url']
             config_dirty = False
     except Exception as e:
         logging.info(e)
@@ -129,7 +132,8 @@ try:
         if user_agent:
             logging.info('user_agent={}'.format(user_agent))
             scrape.set_user_agent(user_agent)
-        scrape.scrape('http://www.helloproject-digitalbooks.com/members/',
+        logging.info('start_url={}'.format(start_url))
+        scrape.scrape(start_url,
                       username, password, cache_dir, 4, 2,
                       YMStringNowJST)
         print('ダウンロード完了しました。')
