@@ -27,7 +27,7 @@ import sys
 import urllib.error
 
 try:
-    version = '0.02'
+    version = '1.00'
     description = 'hpdbdl - Hello! Project Digital Books DownLoader Version {}'.format(version)
     copyright = 'Copyright (C) 2021 saitamanohimawari (埼玉の向日葵)'
     url = 'https://github.com/saitamanohimawari/hpdbdl/'
