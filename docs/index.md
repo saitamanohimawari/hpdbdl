@@ -1,6 +1,6 @@
 [Hello! Project Digital Books](http://www.helloproject-digitalbooks.com/) のダウンロードツールを python で書いてみました。
 
-ソース: https://github.com/saitamanohimawari/hpdbdl
+ソース: [https://github.com/saitamanohimawari/hpdbdl](https://github.com/saitamanohimawari/hpdbdl)
 
 Windows 32bit バイナリ: [hpdbdl-win-1.00.zip](https://github.com/saitamanohimawari/hpdbdl/releases/download/v1.0/hpdbdl-win-1.00.zip)
 
