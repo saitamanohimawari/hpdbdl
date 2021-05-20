@@ -1,4 +1,5 @@
-[Hello! Project Digital Books](http://www.helloproject-digitalbooks.com/) のダウンロードツールを python で書いてみました。
+[Hello! Project Digital Books](http://www.helloproject-digitalbooks.com/) のダウンロードと保存を毎週手作業で行うのが面倒くさいので、
+自動で行うツールを python で書きました。週1回か月末に1回起動するだけで、月別のフォルダに画像を保存してくれます。
 
 ソース: [https://github.com/saitamanohimawari/hpdbdl](https://github.com/saitamanohimawari/hpdbdl)
 
