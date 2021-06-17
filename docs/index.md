@@ -19,6 +19,14 @@ Hello! Project の発展に僅かながら寄与する。
 
 [Hello! Project Digital Books の入会](https://www.helloproject-digitalbooks.com/user/) が必要です。
 
+### 2.0 流れ([スクショ](https://github.com/saitamanohimawari/hpdbdl/issues/11))
+
+[起動前エクスプローラ](https://user-images.githubusercontent.com/81756623/122383148-89008c00-cfa5-11eb-8acf-d83f05713d7f.png) → 
+[メアド入力](https://user-images.githubusercontent.com/81756623/122383157-8aca4f80-cfa5-11eb-98e5-f89b586fd8b5.png) → 
+[パスワード入力](https://user-images.githubusercontent.com/81756623/122383163-8c941300-cfa5-11eb-8761-92891e08d064.png) → 
+[ダウンロード開始](https://user-images.githubusercontent.com/81756623/122383170-8dc54000-cfa5-11eb-9bb2-0a9c511893f3.png) → 
+[終了後imageフォルダ エクスプローラ](https://user-images.githubusercontent.com/81756623/122383175-8ef66d00-cfa5-11eb-922a-a19e6ae1de6f.png)
+
 ### 2.1 Windows 32bit バイナリ使用
 
 動作環境
